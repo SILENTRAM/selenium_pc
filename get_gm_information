@@ -1,0 +1,63 @@
+
+def get_gm_information( order: str, itemsfrom: str or int, itemsto: str or int,num): #位置参数
+    """
+    函数作用：获取gm指令信息
+    order: 具体功能指令 列入：additems
+    itemsfrom：输入items的起始id
+    itemsto:输入items的戒指id
+    str：输入items的数量
+    """
+
+    result:str
+
+
+    if not isinstance(order, str):
+        raise Exception("实参数据类型错误，请输入字符串型")
+
+    if not isinstance(itemsfrom, int):
+        raise Exception("实参数据类型错误，请输入字符串型")
+
+    if not isinstance(itemsto, int):
+        raise Exception("实参数据类型错误，请输入字符串型")
+
+    if not isinstance(num, (int,str)):
+        raise Exception("实参数据类型错误，请输入字符串或整型")
+
+    if itemsfrom > itemsto:
+
+        #raise Exception("输入参数违法，第二个参数必须小于第三个参数")
+
+        itemsfrom,itemsto = itemsto,itemsfrom
+
+        if isinstance(itemsfrom, int) and isinstance(num,int):#判断items是否为int型
+            itemsfrom = str(itemsfrom) # 是int型的话，把int型转换成str型
+            itemsto = str(itemsto) #是int型的话，把int型转换成str型
+            num = str(num) # 是int型的话，把int型转换成str型
+        result = order + " " + "{" + itemsfrom + " To " + itemsto + "}" + "," + num
+
+
+    if itemsfrom == itemsto:
+
+        if isinstance(itemsfrom, int) and isinstance(num, int):  # 判断items是否为int型
+            itemsfrom = str(itemsfrom)  # 是int型的话，把int型转换成str型
+            itemsto = str(itemsto)  # 是int型的话，把int型转换成str型
+            num = str(num)  # 是int型的话，把int型转换成str型
+
+        result = order + " " + itemsfrom + "," + num
+
+    if itemsfrom < itemsto:
+
+        if isinstance(itemsfrom, int) and isinstance(num,int):#判断items是否为int型
+            itemsfrom = str(itemsfrom) # 是int型的话，把int型转换成str型
+            itemsto = str(itemsto) #是int型的话，把int型转换成str型
+            num = str(num) # 是int型的话，把int型转换成str型
+
+        result = order + " " + "{" + itemsfrom + " To " + itemsto + "}" + "," + num
+
+
+    return result
+
+
+
+
+
