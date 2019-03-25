@@ -1,0 +1,30 @@
+from pratice.exe1 import get_gm_information
+
+def structure_judge(order,itemsfrom,itemsto,d):
+
+    result = get_gm_information(order, itemsfrom, itemsto, d)
+
+    if ' To ' in result:
+        #print("包含格式to",result)
+        if '{' and '}' not in result:
+            raise Exception("格式1不合法")
+        result = True
+
+    else:
+        #print(result)
+        if '{' and '}' in result:
+            raise Exception("格式2不合法")
+        result = True
+
+    return result
+
+#print(structure_judge("additems",10002,10002,10))
+
+
+def check(o,start,end,num):
+    check_list = []#解析就是把数据统一放在一个容器中
+    for i in range(start, end + 1):
+        element = get_gm_information(o, i, i, num)
+        check_list.append(element)
+    return check_list
+print(check("anything",1000,1007,20))
