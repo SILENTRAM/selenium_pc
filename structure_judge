@@ -1,4 +1,4 @@
-from pratice.exe1 import get_gm_information
+from pratice.get_gm_information import get_gm_information
 
 def structure_judge(order,itemsfrom,itemsto,d):
 
