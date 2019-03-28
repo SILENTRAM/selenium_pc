@@ -1,0 +1,78 @@
+import random
+
+
+def store(value0: int, value1: int, value2: int, value3: int, value4: int, money: int):
+    """
+    一个道具商店，商店内有5个道具，自己定义价格（用字典）
+
+    每个道具有购买数量限制，随机购买道具1轮 最后返回是剩余多少钱和购买了什么
+
+    如果钱不够就啥都没买。可以说购买道具数量0
+
+    value0 - value4 : 分别为5种道具的价格，使用字典使其一一对应
+
+    money : 可用于购买的资金
+
+    """
+    if not isinstance(value0, int):
+        raise Exception("请输入int型价格")
+
+    if not isinstance(value1, int):
+        raise Exception("请输入int型价格")
+
+    if not isinstance(value2, int):
+        raise Exception("请输入int型价格")
+
+    if not isinstance(value3, int):
+        raise Exception("请输入int型价格")
+
+    if not isinstance(value4, int):
+        raise Exception("请输入int型价格")
+
+    if not isinstance(money, int):
+        raise Exception("请输入int型价格")
+
+    prop = {'a': value0, 'b': value1, 'c': value2, 'd': value3, 'e': value4}  # 记录道具以及其价格的字典
+
+    account = {}  # 用来记录道具实际被购买的次数
+
+    prop_name = []  # 用来记录被购买的道具名称
+
+    limit_account = 3  # 每个道具可以被购买的数量
+
+    last_price_prop = min(prop, key=prop.get)
+
+    if prop[last_price_prop] > money:
+
+        result = "资金不够，获得道具数量为0"
+
+    else:
+
+        for key in prop:
+            want_account = random.randint(0, 4)
+            if want_account > limit_account:  # 随机购买数量大于最大可购买次数
+                want_account = limit_account
+                # want_account, limit_account = limit_account, want_account  # 随机数购买数量置成最大可购买数量
+            if want_account * prop[key] > money or want_account == 0:  # 遍历的当前道具总价大于资金的或者随机数为0的，不购买
+                account[key] = 0
+            else:
+                money = money - want_account * prop[key]  # 正常购买完字典中当前道具之后剩余的资金
+                account[key] = want_account  # 把购买的数量添加到account{}字典中，记录当前道具购买的数量
+                prop_name.append(key)
+
+            print(key + '  '+ str(account[key])) # 打印一下当前account字典中的所有元素
+
+
+        for key in account:
+                if not isinstance(account[key], str):
+                    account[key] = str(account[key])
+
+        money = str(money)
+        prop_name = str(prop_name)
+
+        result = '还剩下的资金: '+ money + ' ' + '购买的道具有: ' + prop_name
+
+    return result
+
+
+print(store(20, 1, 5, 3, 2, 50))
