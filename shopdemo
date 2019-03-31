@@ -1,0 +1,35 @@
+import random
+propItems = {"HPPotion": 15, 'MPPotion': 20, 'candle': 3, 'openKey': 20, 'spade': 8}  #从其他地方读取到
+def store_v1(money: int):
+    """
+    随机购买道具，并且计算返回
+    :param money:
+    :return:
+    """
+    account = {}  # 用来记录道具实际被购买的次数
+    prop_name = []  # 用来记录被购买的道具名称
+    limit_account = 3  # 每个道具可以被购买的数量
+    last_price_prop = min(propItems, key=propItems.get)
+    if propItems[last_price_prop] > money:
+        context = "资金不够购买最便宜的道具，获得道具数量为0"
+    else:
+        for key in propItems:
+            want_account = random.randint(0,limit_account+1) #默认从0开始,4等于limit_account+1
+            if want_account > limit_account:
+                want_account = limit_account # 随机购买数量大于最大可购买次数，让随机购买数量大于最大可购买数量
+            if want_account * propItems[key] > money or want_account == 0:  # 遍历的当前道具总价大于资金的或者随机数为0的，不购买
+                account[key] = 0
+            else:
+                money -= want_account * propItems[key]  #更高效 -=  正常购买完字典中当前道具之后剩余的资金
+                account[key] = want_account  # 把购买的数量添加到account{}字典中，记录当前道具购买的数量
+                prop_name.append(key)
+            print("本回合购买了该道具{}数量为:{}".format(key,account[key])) # 打印一下当前account字典中的所有元素 用format比字符串高效3倍
+        for key in account:
+                if not isinstance(account[key], str):
+                    account[key] = str(account[key])
+        money = str(money)
+        prop_name = str(prop_name)
+        context = "'=================================='\n还剩下的资金:{}\n本次购买道具分别有{}".format(money,prop_name)
+    return context,money,prop_name
+
+print(store_v1(50)) #最终返回的是1个元组，第一个反馈给有客户端或者日志，后面2个，其他地方使用
