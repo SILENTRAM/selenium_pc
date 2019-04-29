@@ -1,0 +1,88 @@
+import random
+
+play = {
+    "play_name": "play01",
+    "play_title": "Novice",
+    "level": 1,
+    "exp": 0,
+    "coin": 1000
+}
+
+# 每50点经验升一级
+# 每完成一个任务增加1点经验值
+# 修改一次名字，直接获得100点经验值
+# 必须完成一个固定任务：修改名称
+# 后续提供三个任务
+# 三个任务随机执行
+
+class Player():
+    _event_list = []
+
+    def update_logic(self):
+        """
+        入口函数
+        play = Player()
+        play.update_logic()
+        逻辑更新
+        :return:
+        """
+        self.task_event()
+
+    def updata_PName(self):
+        """
+        更新玩家名字
+        随机first_name和last_name
+        :return:
+        """
+        _name_list = ["first_name", "last_name"]
+        following_chart = random.randint(0, 1)
+        now_name = _name_list[following_chart]
+        play.__setitem__("play_name", now_name)
+        now_exp = play.get("exp") + 100
+        play.__setitem__("exp", now_exp)
+        plus_level = (now_exp - now_exp % 50) / 50  # 增加的等级，当前经验为0，每提升50点增加一级
+        now_level = play.get("level")  # 获取当前字典中玩家的等级
+        now_level = now_level + plus_level  # 更新当前玩家的等级
+        play.__setitem__("level", int(now_level))
+        self._event_list.append("update_playName")
+        return self._event_list[0], play["level"]
+
+    def task_event(self):
+
+        round_num = 10 # 记录任务执行几轮
+        task_num = 3 #记录几个任务
+        # _event_list_num = 1 # _event_list 列表中随机任务初始小标从1开始
+        _random_task = ["task1", "task2", "task3"]
+        # update_PName()
+        # 随机读取一个任务，前提已完成改名任务，随机数下表从1开始
+        if not "update_playName" == self._event_list[0]:
+            raise Exception("任务顺序错误，请先完成固定任务-修改名称(update_PName())")
+        else:
+            print("任务顺序正确")
+        for i in range(0, round_num):  # 三个任务，循环10轮，共计30个，更新level
+            for j in range(0, task_num):
+                max_task_id = len(_random_task) - 1  # 记录随机任务列表中有几个任务
+                task_id = random.randint(0, max_task_id)  # 在任务列表中随机取一个任务
+                self._event_list.append(_random_task[task_id])  # 把当前随机出来的任务添加入全局事件列表中
+                # _event_list_num += _event_list_num
+                now_exp = play.get("exp") + 1
+                play.__setitem__("exp", now_exp)
+                temp = int(play.get("level"))
+                if (now_exp - 100) % 50 == 0:
+                    temp = int(play.get("level") + 1)
+                    print("当前角色等级为：{}".format(play["level"]))
+                play.__setitem__("level", temp)
+
+        result = "当前角色名称：{} \n 当前角色经验：{} \n 当前角色等级 : {} \n 当前完成的任务列表：{} ".format(play["play_name"], play["exp"],play["level"],self._event_list)
+
+        return result
+
+
+tester = Player()
+print(tester.updata_PName())
+print(tester.task_event())
+
+
+
+
+
